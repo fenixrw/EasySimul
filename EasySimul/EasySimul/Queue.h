@@ -9,11 +9,12 @@ public:
 	~Queue();
 
 	int getSize();
-	bool getNext(Entity &e);
+	bool getNext(Entity *e);
+	bool add(Entity *e);
 
 protected:
 
-	std::queue<Entity> entityQueue;
+	std::queue<Entity*> entityQueue;
 
 };
 

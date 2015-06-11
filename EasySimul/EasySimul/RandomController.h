@@ -1,18 +1,17 @@
 #pragma once
-
 #include <random>
 
 class RandomController
 {
 public:
-	RandomController(unsigned int seed = 5489);
+	RandomController();
 	~RandomController();
-	double getRandomLogNormal();
+	virtual unsigned long getRandom(){ return -1; };
+	static void init(unsigned int seed = 5489);
 
 protected:
 
-	std::mt19937 *mtGenerator;
-	std::lognormal_distribution<double> *logNormal;
+	static std::mt19937 *mtGenerator;
 
 };
 

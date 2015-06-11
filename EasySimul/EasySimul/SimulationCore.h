@@ -6,18 +6,19 @@
 class SimulationCore
 {
 public:
-	SimulationCore(unsigned long endTime = 0);
+	SimulationCore();
 	~SimulationCore();
+
+	void add(SimulationNode* n);
 
 	void run();
 
 protected:
 
-	unsigned long currentTime;
-	unsigned long endAtTime; //0 = disabled
+	unsigned long long currentTime;
 
 	SimulationNode* getNextNode();
-	unsigned long getNextTime();
+	long long getNextTime();
 
 	std::vector<SimulationNode*> nodes;
 	

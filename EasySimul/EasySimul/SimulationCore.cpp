@@ -1,9 +1,8 @@
 #include "SimulationCore.h"
 
 
-SimulationCore::SimulationCore(unsigned long endTime)
+SimulationCore::SimulationCore()
 {
-	endAtTime = endTime;
 	currentTime = 0;
 }
 
@@ -16,15 +15,15 @@ SimulationNode* SimulationCore::getNextNode()
 {
 	SimulationNode* node = NULL;
 
-	for (int i = 0; i < nodes.size(); i++)
+	for (unsigned int i = 0; i < nodes.size(); i++)
 	{
-		int t = nodes[i]->getNexTime();
+		long long t = nodes[i]->getNexTime(currentTime);
 		if (t >= 0)
 		{
 			if (node != NULL) //if there is a selected node
 			{
 				//Compare the times
-				if (t < node->getNexTime())
+				if (t < node->getNexTime(currentTime))
 				{
 					node = nodes[i];
 				}
@@ -39,13 +38,13 @@ SimulationNode* SimulationCore::getNextNode()
 	return node;
 }
 
-unsigned long SimulationCore::getNextTime()
+long long SimulationCore::getNextTime()
 {
-	unsigned long nT = -1;
+	long long nT = -1;
 
-	for (int i = 0; i < nodes.size(); i++)
+	for (unsigned int i = 0; i < nodes.size(); i++)
 	{
-		int t = nodes[i]->getNexTime();
+		long long t = nodes[i]->getNexTime(currentTime);
 		if (t >= 0)
 		{
 			if (nT >= 0) //if there is a selected node
@@ -66,6 +65,11 @@ unsigned long SimulationCore::getNextTime()
 	return nT;
 }
 
+void SimulationCore::add(SimulationNode* n)
+{
+	nodes.push_back(n);
+}
+
 void SimulationCore::run()
 {
 	//First Client
@@ -77,17 +81,22 @@ void SimulationCore::run()
 		//check next time
 		//set next current time
 
-	int nextTime = getNextTime();
+	long long nextTime = getNextTime();
 
 	while (nextTime!=-1)
 	{
 		currentTime = nextTime;
 
-		for (int i = 0; i < nodes.size(); i++)
+		for (unsigned int i = 0; i < nodes.size(); i++)
 		{
 			nodes[i]->update(currentTime);
 		}
 
 		nextTime = getNextTime();
+	}
+	
+	for (unsigned int i = 0; i < nodes.size(); i++)
+	{
+		nodes[i]->end(currentTime);
 	}
 }

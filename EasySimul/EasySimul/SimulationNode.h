@@ -1,16 +1,19 @@
 #pragma once
+#include "RandomController.h"
+#include "Queue.h"
+
 class SimulationNode
 {
 public:
-	SimulationNode();
+	SimulationNode(RandomController *r);
 	~SimulationNode();
 
-	virtual unsigned long getNexTime();
-
-	virtual void update(unsigned long currentTime);
+	virtual long long getNexTime(unsigned long long currentTime){ return -1; };
+	virtual void update(unsigned long long currentTime){};
+	virtual void end(unsigned long long currentTime){};
 	
 protected:
 
-	unsigned long nextTime;
+	RandomController *randControl;
 };
 

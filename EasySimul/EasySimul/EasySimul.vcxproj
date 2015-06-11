@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Generator.cpp" />
+    <ClCompile Include="LogNormal.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="RandomController.cpp" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Generator.h" />
+    <ClInclude Include="LogNormal.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="RandomController.h" />
     <ClInclude Include="Service.h" />
