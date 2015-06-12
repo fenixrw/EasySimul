@@ -4,7 +4,13 @@
 Generator::Generator(RandomController *r) : SimulationNode(r)
 {
 	nextEntityArrival = randControl->getRandom();
+
+#ifdef OUTPUT_DEBUG_RAND
+	std::cout << nextEntityArrival << std::endl;
+#endif
+
 	timeLimit = 0;
+	entityCounter = 0;
 }
 
 
@@ -24,9 +30,15 @@ void Generator::update(unsigned long long currentTime)
 	{
 		if (currentTime == nextEntityArrival)
 		{
+			entityCounter++;
 			Entity *e = new Entity();
 			outputQueue->add(e);
-			nextEntityArrival = currentTime + randControl->getRandom();
+			unsigned long next = randControl->getRandom();
+			nextEntityArrival = currentTime + next;
+
+#ifdef OUTPUT_DEBUG_RAND
+			std::cout << next << std::endl;
+#endif
 		}
 	}
 	else

@@ -13,6 +13,11 @@ void RandomController::init(unsigned int seed)
 	mtGenerator = new std::mt19937(seed);
 }
 
+unsigned long RandomController::mod(double value)
+{
+	return ((value >= 0) ? value : (-1 * value));
+}
+
 RandomController::~RandomController()
 {
 }

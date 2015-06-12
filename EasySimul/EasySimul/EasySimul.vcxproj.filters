@@ -54,6 +54,12 @@
     <ClCompile Include="LogNormal.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Normal.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformNormal3.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Queue.h">
@@ -78,6 +84,12 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="LogNormal.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Normal.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="UniformNormal3.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

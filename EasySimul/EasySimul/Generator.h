@@ -14,6 +14,8 @@ public:
 	void setTimeLimit(unsigned long tLimit);
 	void setOutputQueue(Queue *out);
 
+	unsigned long entityCounter;
+
 protected:
 
 	unsigned long timeLimit;

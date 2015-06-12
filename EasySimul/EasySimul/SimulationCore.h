@@ -10,8 +10,11 @@ public:
 	~SimulationCore();
 
 	void add(SimulationNode* n);
-
 	void run();
+
+
+	unsigned long long getCurrentTime();
+
 
 protected:
 

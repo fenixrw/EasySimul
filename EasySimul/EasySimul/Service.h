@@ -14,15 +14,25 @@ public:
 
 	void setOutputQueue(Queue *out);
 	void setInputQueue(Queue *in);
+	void setSecondaryService(RandomController *r, Queue *out, unsigned long tLimit);
+
+	unsigned long long totalIdleTime;
+
+	void setTurn(long long startT, long long endT);
 
 protected:
 
 	void getNextEntity(unsigned long long currentTime);
-
+	unsigned long timeLimit;
 	long long finishServiceTime; /*-1 = idle (None Entity)*/
 	long long lastServiceTime; /*starts at 0*/
+	long long startTurn;
+	long long endTurn;
+	Entity* entityInService;
 	Queue* entryQueue;
 	Queue* outputQueue;
-	Entity* entityInService;
+	Queue * primaryOutputQueue;
+	Queue * secondaryOutputQueue;
+	RandomController *secondaryRandControl;
 };
 

@@ -11,6 +11,11 @@ SimulationCore::~SimulationCore()
 {
 }
 
+unsigned long long SimulationCore::getCurrentTime()
+{
+	return currentTime;
+}
+
 SimulationNode* SimulationCore::getNextNode()
 {
 	SimulationNode* node = NULL;
