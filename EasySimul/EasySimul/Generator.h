@@ -7,9 +7,10 @@ public:
 	Generator(RandomController *r);
 	~Generator();
 
-	virtual long long getNexTime(unsigned long long currentTime);
+	virtual long long getNextTime(unsigned long long currentTime);
 	virtual void update(unsigned long long currentTime);
 	virtual void end(unsigned long long currentTime);
+	virtual void restart();
 
 	void setTimeLimit(unsigned long tLimit);
 	void setOutputQueue(Queue *out);
@@ -18,6 +19,7 @@ public:
 
 protected:
 
+	unsigned long simulation;
 	unsigned long timeLimit;
 	long long nextEntityArrival;
 	Queue *outputQueue;

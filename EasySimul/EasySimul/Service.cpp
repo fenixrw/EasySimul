@@ -12,10 +12,18 @@ Service::Service(RandomController *r) : SimulationNode(r)
 	secondaryRandControl = NULL;
 	startTurn = -1;
 	endTurn = -1;
+	simulation = 1;
 }
 
 Service::~Service()
 {
+}
+
+void Service::restart()
+{
+	finishServiceTime = -1;//idle
+	lastServiceTime = 0;// used to calculate idle time
+	entityInService = NULL;
 }
 
 void Service::setOutputQueue(Queue *out)
@@ -37,7 +45,8 @@ void Service::setInputQueue(Queue *in)
 
 void Service::getNextEntity(unsigned long long currentTime)
 {
-	if ((startTurn > -1 && startTurn > currentTime) || (endTurn > -1 && endTurn < currentTime))
+	long long cTime = currentTime;
+	if ((startTurn > -1 && startTurn > cTime) || (endTurn > -1 && endTurn < cTime))
 	{
 		finishServiceTime = -1;
 		return;
@@ -81,10 +90,17 @@ void Service::getNextEntity(unsigned long long currentTime)
 	}
 }
 
-long long Service::getNexTime(unsigned long long currentTime)
+long long Service::getNextTime(unsigned long long currentTime)
 {
 	if (finishServiceTime < 0)
 	{
+		long long cTime = currentTime;
+		if (startTurn > -1 && startTurn > cTime)
+		{
+			//std::cout <<  "(ST)";
+			return startTurn;
+		}
+
 		getNextEntity(currentTime);
 	}
 	return finishServiceTime;
@@ -102,7 +118,17 @@ void Service::update(unsigned long long currentTime)
 
 void Service::end(unsigned long long currentTime)
 {
+	long long cTime = currentTime;
 
+	if (endTurn > -1)
+		cTime = endTurn;
+
+	long long idleTime = cTime - lastServiceTime;
+	//std::cout << "idleTime: " << idleTime << std::endl;
+	if (idleTime>0)
+		totalIdleTime += idleTime;
+
+	simulation++;
 }
 
 void Service::setTurn(long long startT, long long endT)

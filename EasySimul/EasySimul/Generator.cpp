@@ -11,6 +11,7 @@ Generator::Generator(RandomController *r) : SimulationNode(r)
 
 	timeLimit = 0;
 	entityCounter = 0;
+	simulation = 1;
 }
 
 
@@ -18,15 +19,19 @@ Generator::~Generator()
 {
 }
 
+void Generator::restart()
+{
+	nextEntityArrival = randControl->getRandom();
+}
 
-long long Generator::getNexTime(unsigned long long currentTime)
+long long Generator::getNextTime(unsigned long long currentTime)
 {
 	return nextEntityArrival;
 }
 
 void Generator::update(unsigned long long currentTime)
 {
-	if (nextEntityArrival < timeLimit)
+	if (/*timeLimit==0 ||*/ nextEntityArrival < timeLimit)
 	{
 		if (currentTime == nextEntityArrival)
 		{
@@ -49,7 +54,7 @@ void Generator::update(unsigned long long currentTime)
 
 void Generator::end(unsigned long long currentTime)
 {
-	
+	simulation++;
 }
 
 

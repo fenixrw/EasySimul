@@ -14,10 +14,12 @@ public:
 
 
 	unsigned long long getCurrentTime();
-
+	void setRepeat(unsigned long numberOfSimulations);
 
 protected:
 
+	unsigned long timesToRepeat;
+	unsigned long simulationNumber;
 	unsigned long long currentTime;
 
 	SimulationNode* getNextNode();

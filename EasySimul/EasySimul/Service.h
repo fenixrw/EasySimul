@@ -7,9 +7,10 @@ public:
 	Service(RandomController *r);
 	~Service();
 
-	virtual long long getNexTime(unsigned long long currentTime);
+	virtual long long getNextTime(unsigned long long currentTime);
 	virtual void update(unsigned long long currentTime);
 	virtual void end(unsigned long long currentTime);
+	virtual void restart();
 
 
 	void setOutputQueue(Queue *out);
@@ -23,6 +24,7 @@ public:
 protected:
 
 	void getNextEntity(unsigned long long currentTime);
+	unsigned long simulation; /*Simulation Day/Number */
 	unsigned long timeLimit;
 	long long finishServiceTime; /*-1 = idle (None Entity)*/
 	long long lastServiceTime; /*starts at 0*/
