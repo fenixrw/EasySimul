@@ -1,5 +1,6 @@
 #pragma once
 #include "SimulationNode.h"
+#include "IncomingEntity.h"
 
 class Generator : public SimulationNode
 {

@@ -36,8 +36,8 @@ void Generator::update(unsigned long long currentTime)
 		if (currentTime == nextEntityArrival)
 		{
 			entityCounter++;
-			Entity *e = new Entity();
-			outputQueue->add(e);
+			Entity *e = new IncomingEntity();
+			outputQueue->add(e,currentTime);
 			unsigned long next = randControl->getRandom();
 			nextEntityArrival = currentTime + next;
 

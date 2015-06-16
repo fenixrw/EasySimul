@@ -1,20 +1,37 @@
 #pragma once
 #include "Entity.h"
 #include <queue>
+#include <map>
+
+typedef enum _QueueType
+{
+	NormalQueue=0, EntryQueue, ExitQueue
+}QUEUE_TYPE;
 
 class Queue
 {
 public:
-	Queue();
+	Queue(QUEUE_TYPE t = NormalQueue);
 	~Queue();
 
 	int getSize();
-	bool getNext(Entity *e);
-	bool add(Entity *e);
+	Entity * getNext(unsigned long long currentTime);
+	bool add(Entity *e, unsigned long long currentTime);
 
+	std::map<unsigned long, unsigned long long> getTimePerSize();
+	unsigned long getMaxSize();
+	unsigned long getID();
+	
 protected:
-
+	unsigned long id;
 	std::queue<Entity*> entityQueue;
+	QUEUE_TYPE type;
+	unsigned long maxSize;
+	unsigned long long lastOperationTime;
+	std::map<unsigned long, unsigned long long> timePerSize;  //[size] --> time
+
+private:
+	static unsigned long idController;
 
 };
 

@@ -1,5 +1,4 @@
 #include "Service.h"
-
 #include <iostream>
 
 Service::Service(RandomController *r) : SimulationNode(r)
@@ -13,10 +12,32 @@ Service::Service(RandomController *r) : SimulationNode(r)
 	startTurn = -1;
 	endTurn = -1;
 	simulation = 1;
+	entityOutgoingCounter = 0;
+	entityIncomingCounter = 0;
 }
 
 Service::~Service()
 {
+}
+
+unsigned long Service::getEntityIncomingCounter()
+{
+	return entityIncomingCounter;
+}
+
+unsigned long Service::getEntityOutgoingCounter()
+{
+	return entityOutgoingCounter;
+}
+
+unsigned long long Service::getTotalIdleTime()
+{
+	return totalIdleTime;
+}
+
+unsigned long Service::getID()
+{
+	return id;
 }
 
 void Service::restart()
@@ -52,12 +73,18 @@ void Service::getNextEntity(unsigned long long currentTime)
 		return;
 	}
 
-	if (entryQueue->getNext(entityInService))
+	entityInService = (EntityS*)entryQueue->getNext(currentTime);
+
+	if (entityInService!=NULL)
 	{
 		unsigned long long serviceTime = randControl->getRandom();
 #ifdef OUTPUT_DEBUG_RAND
 		std::cout << serviceTime << std::endl;
 #endif
+
+		entityInService->enterService(currentTime, id);
+		entityIncomingCounter++;
+
 		outputQueue = primaryOutputQueue;
 		if (finishServiceTime < 0)
 		{
@@ -78,7 +105,11 @@ void Service::getNextEntity(unsigned long long currentTime)
 			std::cout << serviceTime << std::endl;
 #endif
 			outputQueue = secondaryOutputQueue;
-			entityInService = new Entity();
+			entityInService = new OutgoingEntity();
+
+			entityInService->enterService(currentTime, id);
+			entityOutgoingCounter++;
+
 			//TODO: set Entity parameters
 			finishServiceTime = currentTime + serviceTime;
 			lastServiceTime = finishServiceTime;
@@ -111,7 +142,16 @@ void Service::update(unsigned long long currentTime)
 	if (finishServiceTime == currentTime)
 	{
 		//std::cout << "Client Processed by the Service" << std::endl;
-		outputQueue->add(entityInService);
+		if (entityInService != NULL)
+		{
+			entityInService->exitService(currentTime, id);
+			outputQueue->add(entityInService, currentTime);
+		}
+		else
+		{
+			//error
+		}
+
 		getNextEntity(currentTime);
 	}
 }

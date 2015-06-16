@@ -1,4 +1,6 @@
 #pragma once
+#include "OutgoingEntity.h"
+#include "IncomingEntity.h"
 #include "SimulationNode.h"
 
 class Service : public SimulationNode
@@ -17,12 +19,18 @@ public:
 	void setInputQueue(Queue *in);
 	void setSecondaryService(RandomController *r, Queue *out, unsigned long tLimit);
 
-	unsigned long long totalIdleTime;
 
 	void setTurn(long long startT, long long endT);
 
+
+	unsigned long getEntityIncomingCounter();
+	unsigned long getEntityOutgoingCounter();
+	unsigned long long getTotalIdleTime();
+	unsigned long getID();
+
 protected:
 
+	unsigned long id;
 	void getNextEntity(unsigned long long currentTime);
 	unsigned long simulation; /*Simulation Day/Number */
 	unsigned long timeLimit;
@@ -30,11 +38,19 @@ protected:
 	long long lastServiceTime; /*starts at 0*/
 	long long startTurn;
 	long long endTurn;
-	Entity* entityInService;
+	EntityS* entityInService;	
+
+	unsigned long entityIncomingCounter;
+	unsigned long entityOutgoingCounter;
+	unsigned long long totalIdleTime;
+
 	Queue* entryQueue;
 	Queue* outputQueue;
 	Queue * primaryOutputQueue;
 	Queue * secondaryOutputQueue;
 	RandomController *secondaryRandControl;
+
+private:
+	static unsigned long idController;
 };
 

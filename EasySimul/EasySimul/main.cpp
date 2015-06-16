@@ -23,7 +23,7 @@ int main()
 	bool useDoubleAssignmentOutgoing = false;
 
 	unsigned long simulationTime = 10 * 60;
-	unsigned long simulationRepeats = 200;
+	unsigned long simulationRepeats = 1;
 	RandomController::init(5489);
 		
 	LogNormal lnDist(2.0179,1.2223); //Arrival Distribution
@@ -33,7 +33,7 @@ int main()
 	double s3[3] = { 0.005, 1, 0.005 };
 	UniformNormal3 un3Dist(prob, m3, s3);
 
-	Queue incomingCalls, exitQueue, exitQueue2, emptyQueue;
+	Queue incomingCalls(EntryQueue), exitQueue(ExitQueue), exitQueue2(ExitQueue), emptyQueue;
 
 	Generator inGen(&lnDist);
 	inGen.setOutputQueue(&incomingCalls);
@@ -131,30 +131,33 @@ int main()
 	core.setRepeat(simulationRepeats);
 	core.run();
 
-	cout << endl << "----------------------- Total --------------------------" << endl << endl;
+	cout << endl << "------------------- Total Output <of " << simulationRepeats << " simulation(s)> -------------------" << endl << endl;
 	cout << "	Clients Entered The Sistem	: " << inGen.entityCounter << endl;
 	cout << "	Clients Exited The Sistem	: " << exitQueue.getSize() << endl;
-	cout << "	Total Idle Time For Attendent 1	: " << attendent1.totalIdleTime << endl;
-	cout << "	Total Idle Time For Attendent 1b: " << attendent1b.totalIdleTime << endl;
-	cout << "	Total Idle Time For Attendent 2	: " << attendent2.totalIdleTime << endl;
-	cout << "	Total Idle Time For Attendent 2b: " << attendent2b.totalIdleTime << endl;
-	cout << "	Total Idle Time For Attendent 2c: " << attendent2c.totalIdleTime << endl;
+	cout << "	Total Idle Time For Attendent 1	: " << attendent1.getTotalIdleTime() << endl;
+	cout << "	Total Idle Time For Attendent 1b: " << attendent1b.getTotalIdleTime() << endl;
+	cout << "	Total Idle Time For Attendent 2	: " << attendent2.getTotalIdleTime() << endl;
+	cout << "	Total Idle Time For Attendent 2b: " << attendent2b.getTotalIdleTime() << endl;
+	if (addAttendent2c)
+		cout << "	Total Idle Time For Attendent 2c: " << attendent2c.getTotalIdleTime() << endl;
 	cout << "	Total Secondary Service Done	: " << exitQueue2.getSize() << endl;
 	cout << "	Secondary Service Per Attendent	: " << exitQueue2.getSize() / 5 << endl;
+	cout << "	Incoming Call Max Time In Queue	: " << IncomingEntity::getMaxTimeInQueue() << endl;
 	if (simulationRepeats == 1)
 	{
 		cout << "End Time: " << core.getCurrentTime() << endl;
 	}
 	else
 	{
-		cout << endl << "----------------------- Median --------------------------" << endl << endl;
+		cout << endl << "------------------- Median Output <of " << simulationRepeats << " simulation(s)> -------------------" << endl << endl;
 		cout << "	Clients Entered The Sistem	: " << inGen.entityCounter/simulationRepeats << endl;
 		cout << "	Clients Exited The Sistem	: " << exitQueue.getSize() / simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 1	: " << attendent1.totalIdleTime / simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 1b: " << attendent1b.totalIdleTime / simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 2	: " << attendent2.totalIdleTime / simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 2b: " << attendent2b.totalIdleTime / simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 2c: " << attendent2c.totalIdleTime / simulationRepeats << endl;
+		cout << "	Total Idle Time For Attendent 1	: " << attendent1.getTotalIdleTime() / simulationRepeats << endl;
+		cout << "	Total Idle Time For Attendent 1b: " << attendent1b.getTotalIdleTime() / simulationRepeats << endl;
+		cout << "	Total Idle Time For Attendent 2	: " << attendent2.getTotalIdleTime() / simulationRepeats << endl;
+		cout << "	Total Idle Time For Attendent 2b: " << attendent2b.getTotalIdleTime() / simulationRepeats << endl;
+		if (addAttendent2c)
+			cout << "	Total Idle Time For Attendent 2c: " << attendent2c.getTotalIdleTime() / simulationRepeats << endl;
 		cout << "	Total Secondary Service Done	: " << exitQueue2.getSize() / simulationRepeats << endl;
 		cout << "	Secondary Service Per Attendent	: " << (exitQueue2.getSize() / 5) / simulationRepeats << endl;
 	}

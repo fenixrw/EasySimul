@@ -60,6 +60,15 @@
     <ClCompile Include="UniformNormal3.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="IncomingEntity.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="OutgoingEntity.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityS.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Queue.h">
@@ -90,6 +99,15 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="UniformNormal3.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="IncomingEntity.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="OutgoingEntity.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityS.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
