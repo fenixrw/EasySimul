@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include <queue>
 #include <map>
+#include <vector>
 
 typedef enum _QueueType
 {
@@ -21,6 +22,10 @@ public:
 	std::map<unsigned long, unsigned long long> getTimePerSize();
 	unsigned long getMaxSize();
 	unsigned long getID();
+	std::vector<Entity*> emptyToVector();
+	unsigned long getTotalSimulationTime();
+	void end(unsigned long long currentTime);
+	void restart();
 	
 protected:
 	unsigned long id;
@@ -28,6 +33,7 @@ protected:
 	QUEUE_TYPE type;
 	unsigned long maxSize;
 	unsigned long long lastOperationTime;
+	unsigned long long totalSimulationTime;
 	std::map<unsigned long, unsigned long long> timePerSize;  //[size] --> time
 
 private:

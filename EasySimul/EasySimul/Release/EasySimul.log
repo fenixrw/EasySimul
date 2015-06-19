@@ -1,9 +1,31 @@
-﻿Build started 15/06/2015 20:41:43.
-     1>Project "F:\EasySimul\EasySimul\EasySimul\EasySimul\EasySimul.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         EasySimul.vcxproj -> F:\EasySimul\EasySimul\EasySimul\Release\EasySimul.exe
-     1>Done Building Project "F:\EasySimul\EasySimul\EasySimul\EasySimul\EasySimul.vcxproj" (Build target(s)).
+﻿Build started 19/06/2015 01:00:06.
+     1>Project "E:\Programming\VS2013\EasySimul-Repo\EasySimul\EasySimul\EasySimul.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"../../tclap-1.2.1/include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Service.cpp SimulationCore.cpp main.cpp
+         Service.cpp
+         SimulationCore.cpp
+         main.cpp
+     1>main.cpp(435): warning C4018: '<' : signed/unsigned mismatch
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Programming\VS2013\EasySimul-Repo\EasySimul\Release\EasySimul.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Programming\VS2013\EasySimul-Repo\EasySimul\Release\EasySimul.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Programming\VS2013\EasySimul-Repo\EasySimul\Release\EasySimul.lib" /MACHINE:X86 /SAFESEH Release\Entity.obj
+         Release\EntityS.obj
+         Release\Generator.obj
+         Release\IncomingEntity.obj
+         Release\LogNormal.obj
+         Release\main.obj
+         Release\Normal.obj
+         Release\OutgoingEntity.obj
+         Release\Queue.obj
+         Release\RandomController.obj
+         Release\Service.obj
+         Release\SimulationCore.obj
+         Release\SimulationNode.obj
+         Release\UniformNormal3.obj
+         Generating code
+         Finished generating code
+         EasySimul.vcxproj -> E:\Programming\VS2013\EasySimul-Repo\EasySimul\Release\EasySimul.exe
+     1>Done Building Project "E:\Programming\VS2013\EasySimul-Repo\EasySimul\EasySimul\EasySimul.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.20
+Time Elapsed 00:00:03.48

@@ -1,0 +1,61 @@
+Command: EasySimul.exe -f output1.txt 
+
+------------------- Total Output <of 1 simulation(s)> -------------------
+
+	Incoming Clients		: 39
+	Idle Time For Attendant 1	: 93 minutes
+	Idle Time For Attendant 2	: 127 minutes
+	Idle Time For Attendant 3	: 291 minutes
+	Idle Time For Attendant 4	: 353 minutes
+	Idle Time For Attendant 5	: 0 minutes
+	Idle Time For Attendant 6	: 0 minutes
+	Idle Time For Attendant 7	: 28 minutes
+	Idle Time For Attendant 8	: 35 minutes
+	Idle Time For Attendant 9	: 30 minutes
+	Secondary Service Done		: 240
+	Secondary Service / Attendants	: 48
+	End Time			: 637 minutes
+
+------------------- ++++++ Output <of 1 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 42 minutes
+	Probability of Client in Queue	: 41%
+	Average Queue Waiting Time	: 6.462 minutes
+	Average Service Time	: 17.1 minutes
+	Average Time in System	: 23.56 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <81.1617%>
+			Queue Size = 1	: <05.8085%>
+			Queue Size = 2	: <05.3375%>
+			Queue Size = 3	: <07.6923%>
+	Average Expected Queue Size	: 0.3956
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 7.596 minutes
+	Average Time in System	: 7.596 minutes
+	Probability per Call Type	
+			Busy Calls		: <02.5%>
+			Missed Calls		: <57.5%>
+			Answered Calls		: <40%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 74.2%>	<Free:25.8%>
+			Attendant 2	: <Busy: 64.7%>	<Free:35.3%>
+			Attendant 3	: <Busy: 26.7%>	<Free:73.3%>
+			Attendant 4	: <Busy: 11.1%>	<Free:88.9%>
+			Attendant 5	: <Busy: 100%>	<Free:0%>
+			Attendant 6	: <Busy: 100%>	<Free:0%>
+			Attendant 7	: <Busy: 92.9%>	<Free:7.05%>
+			Attendant 8	: <Busy: 91.2%>	<Free:8.82%>
+			Attendant 9	: <Busy: 92.4%>	<Free:7.56%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 2	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 3	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 4	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 5	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 6	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 7	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 8	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 9	: <Incoming: 0%>	<Outgoing:100%>
+

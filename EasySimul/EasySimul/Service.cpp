@@ -1,5 +1,8 @@
 #include "Service.h"
 #include <iostream>
+unsigned int Service::minFreeServices = 1;
+unsigned int Service::freeServices = 0;
+unsigned long Service::idController = 0;
 
 Service::Service(RandomController *r) : SimulationNode(r)
 {
@@ -7,17 +10,32 @@ Service::Service(RandomController *r) : SimulationNode(r)
 	lastServiceTime = 0;// used to calculate idle time
 	entityInService = NULL;
 	totalIdleTime = 0;
+	totalSimulationTime = 0;
 	timeLimit = 0;
 	secondaryRandControl = NULL;
-	startTurn = -1;
+	startTurn = 0;
 	endTurn = -1;
 	simulation = 1;
 	entityOutgoingCounter = 0;
 	entityIncomingCounter = 0;
+	freeIncomingServiceRule = false;
+	freeIncomingServiceRuleStarted = false;
+	id = idController;
+	idController++;
 }
 
 Service::~Service()
 {
+}
+
+void Service::activeFreeIncomingServiceRule()
+{
+	freeIncomingServiceRule = true;
+}
+
+unsigned long long Service::getTotalSimulationTime()
+{
+	return totalSimulationTime;
 }
 
 unsigned long Service::getEntityIncomingCounter()
@@ -42,8 +60,14 @@ unsigned long Service::getID()
 
 void Service::restart()
 {
+	freeServices = 0;
+	freeIncomingServiceRuleStarted = false;
 	finishServiceTime = -1;//idle
 	lastServiceTime = 0;// used to calculate idle time
+	if (startTurn > 0)
+	{
+		lastServiceTime = startTurn;
+	}
 	entityInService = NULL;
 }
 
@@ -69,8 +93,25 @@ void Service::getNextEntity(unsigned long long currentTime)
 	long long cTime = currentTime;
 	if ((startTurn > -1 && startTurn > cTime) || (endTurn > -1 && endTurn < cTime))
 	{
+		if (freeIncomingServiceRule && freeIncomingServiceRuleStarted)
+		{
+			if (endTurn > -1 && endTurn < cTime)
+			{
+				freeServices--;
+				freeIncomingServiceRuleStarted = false;
+			}
+		}
+
 		finishServiceTime = -1;
 		return;
+	}
+	else if (freeIncomingServiceRule)
+	{
+		if (cTime == startTurn)
+		{
+			freeIncomingServiceRuleStarted = true;
+			freeServices++;
+		}
 	}
 
 	entityInService = (EntityS*)entryQueue->getNext(currentTime);
@@ -95,11 +136,29 @@ void Service::getNextEntity(unsigned long long currentTime)
 		
 		finishServiceTime = currentTime + serviceTime;
 		lastServiceTime = finishServiceTime;
+
+		if (freeIncomingServiceRule)
+		{
+			freeServices--;
+		}
 	}
 	else
 	{
 		if (timeLimit > currentTime &&(secondaryRandControl != NULL && secondaryOutputQueue != NULL))
 		{
+			if (freeIncomingServiceRule)
+			{
+				if(freeServices>minFreeServices)
+				{
+					freeServices--;
+				}
+				else
+				{
+					finishServiceTime = -1;
+					return;
+				}
+			}
+
 			unsigned long long serviceTime = secondaryRandControl->getRandom();		
 #ifdef OUTPUT_DEBUG_RAND
 			std::cout << serviceTime << std::endl;
@@ -107,6 +166,7 @@ void Service::getNextEntity(unsigned long long currentTime)
 			outputQueue = secondaryOutputQueue;
 			entityInService = new OutgoingEntity();
 
+			entityInService->enterSystem(currentTime);
 			entityInService->enterService(currentTime, id);
 			entityOutgoingCounter++;
 
@@ -144,6 +204,11 @@ void Service::update(unsigned long long currentTime)
 		//std::cout << "Client Processed by the Service" << std::endl;
 		if (entityInService != NULL)
 		{
+			if (freeIncomingServiceRule)
+			{
+				freeServices++;
+			}
+
 			entityInService->exitService(currentTime, id);
 			outputQueue->add(entityInService, currentTime);
 		}
@@ -167,6 +232,14 @@ void Service::end(unsigned long long currentTime)
 	//std::cout << "idleTime: " << idleTime << std::endl;
 	if (idleTime>0)
 		totalIdleTime += idleTime;
+
+	unsigned long long simulTime = cTime;
+	if (startTurn > 0)
+	{
+		simulTime -= startTurn;
+	}
+
+	totalSimulationTime += simulTime;
 
 	simulation++;
 }

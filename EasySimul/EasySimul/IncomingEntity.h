@@ -11,8 +11,11 @@ public:
 	virtual void exitQueue(unsigned long long currentTime, unsigned long queueID);
 
 	static unsigned long long getMaxTimeInQueue();
+	static unsigned long long getMaxTimeInQueueSum();
 	unsigned long long getTotalTimeInQueue();
-
+	
+	static void restart();
+	static void end();
 
 protected:
 	
@@ -21,5 +24,7 @@ protected:
 	long idQueue;
 
 	static unsigned long long maxTimeInQueue;
+	static unsigned long long maxTimeInQueueSum;
+	static unsigned long long maxTimeInQueueAtSimulation;
 };
 

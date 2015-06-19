@@ -5,6 +5,7 @@
 #include "Generator.h"
 #include "Service.h"
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -14,7 +15,7 @@ using namespace std;
 
 typedef struct _simulCongif
 {
-	bool addAttendent;
+	bool addAttendant;
 	bool useDoubleAssignmentIncoming;
 	bool useDoubleAssignmentOutgoing;
 
@@ -22,6 +23,13 @@ typedef struct _simulCongif
 	unsigned long simulationRepeats;
 
 	unsigned int seed;
+
+	string fileName;
+	bool saveToFile;
+	bool pause;
+
+	bool incomingFreeService;
+	unsigned int minFreeServices;
 
 }SimulConfig;
 
@@ -36,6 +44,15 @@ void getConfigInfo(SimulConfig &config, int argc, char** argv)
 		ValueArg<unsigned int> seedArg("s", "seed", "Set simulation seed.", false, 5489, "uint");// ("n", "name", "Name to print", true, "homer", "string");
 		cmd.add(seedArg);
 
+		SwitchArg xSwitch("x", "rule", "Active incoming free service rule ('m' services must be free to wait for incoming calls). [needs -i and/or -o]", false);
+		cmd.add(xSwitch);
+
+		ValueArg<unsigned int> minFreeServicesArg("m", "min", "Set minimum number of services.", false, 1, "uint");// ("n", "name", "Name to print", true, "homer", "string");
+		cmd.add(minFreeServicesArg);
+
+		SwitchArg pauseSwitch("p", "pause", "Pause cmd at the end.", false);
+		cmd.add(pauseSwitch);
+
 		SwitchArg newAttendantSwitch("a", "add", "Add 1 attendant.", false);
 		cmd.add(newAttendantSwitch);
 
@@ -48,18 +65,28 @@ void getConfigInfo(SimulConfig &config, int argc, char** argv)
 		ValueArg<unsigned long> repeatArg("r", "repeat", "Set number of times to repeat the simulation.", false, 1, "ulong");// ("n", "name", "Name to print", true, "homer", "string");
 		cmd.add(repeatArg);
 
-		ValueArg<unsigned long> timeArg("t", "time", "Set simulation time in minutes.", false, 600, "");// ("n", "name", "Name to print", true, "homer", "string");
+		ValueArg<unsigned long> timeArg("t", "time", "Set simulation time in minutes.", false, 600, "ulong");// ("n", "name", "Name to print", true, "homer", "string");
 		cmd.add(timeArg);
+		
+		ValueArg<string> fileArg("f", "file", "Set output file.", false, "filename.txt", "string");// ("n", "name", "Name to print", true, "homer", "string");
+		cmd.add(fileArg);
 
 		cmd.parse(argc, argv);
 
-		config.addAttendent = newAttendantSwitch.getValue();
+		config.addAttendant = newAttendantSwitch.getValue();
 		config.seed = seedArg.getValue();
 		config.simulationRepeats = repeatArg.getValue();
 		config.simulationTime = timeArg.getValue();
 		config.useDoubleAssignmentIncoming = incomingSwitch.getValue();
 		config.useDoubleAssignmentOutgoing = outgoingSwitch.getValue();
-
+		config.pause = pauseSwitch.getValue();
+		config.incomingFreeService = xSwitch.getValue();
+		config.saveToFile = fileArg.isSet();
+		config.minFreeServices = minFreeServicesArg.getValue();
+		if (config.saveToFile)
+		{
+			config.fileName = fileArg.getValue();
+		}
 	}
 	catch (ArgException &e)  // catch any exceptions
 	{
@@ -70,31 +97,29 @@ void getConfigInfo(SimulConfig &config, int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	//unsigned long long a = 240;
-	//long long b = a;
-	//cout << a << "=" << b << endl;
-	//system("pause");
-	//bool addAttendent2c = true;
-	//bool useDoubleAssignmentIncoming = true;
-	//bool useDoubleAssignmentOutgoing = true;
+	stringstream outStream;
+	outStream.clear();
 
 	SimulConfig config;
 	
 	getConfigInfo(config, argc, argv);
 
-	/*bool addAttendent2c = false;
-	bool useDoubleAssignmentIncoming = false;
-	bool useDoubleAssignmentOutgoing = false;
+	if (argc==2)
+		if (argv[1][1] == 'h' || strcmp(argv[1], "--help") == 0)
+		{
+			exit(1);
+		}
 
-	unsigned long simulationTime = 10 * 60;
-	unsigned long simulationRepeats = 1;*/
+	Service::minFreeServices = config.minFreeServices;
 
-	RandomController::init(config.seed);//5489
+	RandomController::init(config.seed);
+
+	double outCallAnswered = 13, outCallBusy = 2.5, outCallMissed = 4;
 		
 	LogNormal lnDist(2.0179,1.2223); //Arrival Distribution
 	Normal nDist(15.714, 11.604);
 	unsigned int prob[3] = { 3, 39, 58 };
-	double m3[3] = { 2.5, 13, 4 };//{ 1, 8, 2 };//
+	double m3[3] = { outCallBusy, outCallAnswered, outCallMissed };//{ 1, 8, 2 };//
 	double s3[3] = { 0.005, 1, 0.005 };
 	UniformNormal3 un3Dist(prob, m3, s3);
 
@@ -104,137 +129,321 @@ int main(int argc, char** argv)
 	inGen.setOutputQueue(&incomingCalls);
 	inGen.setTimeLimit(config.simulationTime);
 
+
+
 	//----------------------------- INCOMING CALLS -----------------------------
+	Service attendant[10] = { 
+		Service(&nDist), Service(&nDist), Service(&nDist), Service(&nDist), Service(&nDist),
+		Service(&nDist), Service(&nDist), Service(&nDist), Service(&nDist), Service(&nDist)};
 
-	Service attendent1(&nDist);
-	attendent1.setInputQueue(&incomingCalls);
-	attendent1.setOutputQueue(&exitQueue);
-	attendent1.setTurn(-1, 6 * 60);
+	attendant[0].setInputQueue(&incomingCalls);
+	attendant[0].setOutputQueue(&exitQueue);
+	attendant[0].setTurn(0, 6 * 60);
 	if (config.useDoubleAssignmentOutgoing)
-		attendent1.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	{
+		attendant[0].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	}
 
-	Service attendent1b(&nDist);
-	attendent1b.setInputQueue(&incomingCalls);
-	attendent1b.setOutputQueue(&exitQueue);
-	attendent1b.setTurn(-1, 6 * 60);
+	attendant[1].setInputQueue(&incomingCalls);
+	attendant[1].setOutputQueue(&exitQueue);
+	attendant[1].setTurn(0, 6 * 60);
 	if (config.useDoubleAssignmentOutgoing)
-		attendent1b.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	{ 
+		attendant[1].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	}
+		
 	
-	Service attendent2(&nDist);
-	attendent2.setInputQueue(&incomingCalls);
-	attendent2.setOutputQueue(&exitQueue);
-	attendent2.setTurn(4 * 60, -1);
+	attendant[2].setInputQueue(&incomingCalls);
+	attendant[2].setOutputQueue(&exitQueue);
+	attendant[2].setTurn(4 * 60, -1);
 	if (config.useDoubleAssignmentOutgoing)
-		attendent2.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	{
+		attendant[2].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	}
 
-	Service attendent2b(&nDist);
-	attendent2b.setInputQueue(&incomingCalls);
-	attendent2b.setOutputQueue(&exitQueue);
-	attendent2b.setTurn(4 * 60, -1);
+	attendant[3].setInputQueue(&incomingCalls);
+	attendant[3].setOutputQueue(&exitQueue);
+	attendant[3].setTurn(4 * 60, -1);
 	if (config.useDoubleAssignmentOutgoing)
-		attendent2b.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	{
+		attendant[3].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	}
 	
-	Service attendent2c(&nDist);
-	attendent2c.setInputQueue(&incomingCalls);
-	attendent2c.setOutputQueue(&exitQueue);
-	attendent2c.setTurn(4 * 60, -1);
+	attendant[9].setInputQueue(&incomingCalls);
+	attendant[9].setOutputQueue(&exitQueue);
+	attendant[9].setTurn(0, 6*60);
 	if (config.useDoubleAssignmentOutgoing)
-		attendent2c.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	{
+		attendant[9].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	}
+
+
+	bool activateFreeServiceRule = ((config.useDoubleAssignmentIncoming || config.useDoubleAssignmentOutgoing) && config.incomingFreeService);
+
+	if (activateFreeServiceRule)
+	{
+		attendant[0].activeFreeIncomingServiceRule();
+		attendant[1].activeFreeIncomingServiceRule();
+		attendant[2].activeFreeIncomingServiceRule();
+		attendant[3].activeFreeIncomingServiceRule();
+		attendant[9].activeFreeIncomingServiceRule();
+	}
 
 	//----------------------------- OUTGOING CALLS -----------------------------
 
 	Queue *q = &emptyQueue;
 
 	if (config.useDoubleAssignmentIncoming)
+	{
 		q = &incomingCalls;
+		if (activateFreeServiceRule)
+		{
+			attendant[4].activeFreeIncomingServiceRule();
+			attendant[5].activeFreeIncomingServiceRule();
+			attendant[6].activeFreeIncomingServiceRule();
+			attendant[7].activeFreeIncomingServiceRule();
+			attendant[8].activeFreeIncomingServiceRule();
+		}
+	}
 
-	Service attendent3(&nDist);
-	attendent3.setInputQueue(q);
-	attendent3.setOutputQueue(&exitQueue);
-	attendent3.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
-	attendent3.setTurn(-1, 6 * 60);
+	attendant[4].setInputQueue(q);
+	attendant[4].setOutputQueue(&exitQueue);
+	attendant[4].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	attendant[4].setTurn(0, 6 * 60);
 
-	Service attendent3b(&nDist);
-	attendent3b.setInputQueue(q);
-	attendent3b.setOutputQueue(&exitQueue);
-	attendent3b.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
-	attendent3b.setTurn(-1, 6 * 60);
+	attendant[5].setInputQueue(q);
+	attendant[5].setOutputQueue(&exitQueue);
+	attendant[5].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	attendant[5].setTurn(0, 6 * 60);
 
-	Service attendent4(&nDist);
-	attendent4.setInputQueue(q);
-	attendent4.setOutputQueue(&exitQueue);
-	attendent4.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
-	attendent4.setTurn(4 * 60, -1);
+	attendant[6].setInputQueue(q);
+	attendant[6].setOutputQueue(&exitQueue);
+	attendant[6].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	attendant[6].setTurn(4 * 60, -1);
 
-	Service attendent4b(&nDist);
-	attendent4b.setInputQueue(q);
-	attendent4b.setOutputQueue(&exitQueue);
-	attendent4b.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
-	attendent4b.setTurn(4 * 60, -1);
+	attendant[7].setInputQueue(q);
+	attendant[7].setOutputQueue(&exitQueue);
+	attendant[7].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	attendant[7].setTurn(4 * 60, -1);
 
-	Service attendent4c(&nDist);
-	attendent4c.setInputQueue(q);
-	attendent4c.setOutputQueue(&exitQueue);
-	attendent4c.setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
-	attendent4c.setTurn(4 * 60, -1);
+	attendant[8].setInputQueue(q);
+	attendant[8].setOutputQueue(&exitQueue);
+	attendant[8].setSecondaryService(&un3Dist, &exitQueue2, config.simulationTime);
+	attendant[8].setTurn(4 * 60, -1);
 
 	//----------------------------- CORE -----------------------------
 
 	SimulationCore core;
+
 	core.add(&inGen);
-	core.add(&attendent1);
-	core.add(&attendent2);
-	core.add(&attendent3);
-	core.add(&attendent4);
-	core.add(&attendent1b);
-	core.add(&attendent2b);
-	core.add(&attendent3b);
-	core.add(&attendent4b);
-	if (config.addAttendent)
-		core.add(&attendent2c);
-	core.add(&attendent4c);
+
+	for (int i = 0; i < 9; i++)
+		core.add(&attendant[i]);
+
+	if (config.addAttendant)
+		core.add(&attendant[9]);
+
 	core.setRepeat(config.simulationRepeats);
+
 	core.run();
 
-	cout << endl << "------------------- Total Output <of " << config.simulationRepeats << " simulation(s)> -------------------" << endl << endl;
-	cout << "	Total Incoming Clients		: " << inGen.entityCounter << endl;
-	cout << "	Total Idle Time For Attendent 1	: " << attendent1.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 1b: " << attendent1b.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 2	: " << attendent2.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 2b: " << attendent2b.getTotalIdleTime() << endl;
-	if (config.addAttendent)
-		cout << "	Total Idle Time For Attendent 2c: " << attendent2c.getTotalIdleTime() << endl;
+	vector<Entity*> eList = exitQueue.emptyToVector();
+	vector<Entity*> eList2 = exitQueue2.emptyToVector();
 
-	cout << "	Total Idle Time For Attendent 3	: " << attendent3.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 3b: " << attendent3b.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 4	: " << attendent4.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 4b: " << attendent4b.getTotalIdleTime() << endl;
-	cout << "	Total Idle Time For Attendent 4c: " << attendent4b.getTotalIdleTime() << endl;
+	outStream << endl << "------------------- Total Output <of " << config.simulationRepeats << " simulation(s)> -------------------" << endl << endl;
+	outStream << "	Incoming Clients		: " << inGen.entityCounter << endl;
+	
+	for (int i = 0; i < 10; i++)
+	{
+		if (config.addAttendant || i < 9)
+			outStream << "	Idle Time For Attendant " << i + 1 << "	: " << attendant[i].getTotalIdleTime() << " minutes" << endl;
+	}
 
-	cout << "	Total Secondary Service Done	: " << exitQueue2.getSize() << endl;
-	cout << "	Secondary Service Per Attendent	: " << exitQueue2.getSize() / 5 << endl;
-	cout << "	Incoming Call Max Time In Queue	: " << IncomingEntity::getMaxTimeInQueue() << endl;
+	outStream << "	Secondary Service Done		: " << eList2.size() << endl;
+	outStream << "	Secondary Service / Attendants	: " << eList2.size() / ((config.useDoubleAssignmentOutgoing) ? (((config.addAttendant) ? 10 : 9)) : 5) << endl;
+
 	if (config.simulationRepeats == 1)
 	{
-		cout << "End Time: " << core.getCurrentTime() << endl;
+		outStream << "	End Time			: " << core.getCurrentTime() << " minutes" << endl;
 	}
 	else
 	{
-		cout << endl << "------------------- Median Output <of " << config.simulationRepeats << " simulation(s)> -------------------" << endl << endl;
-		cout << "	Incoming Clients / Simulation	: " << inGen.entityCounter / config.simulationRepeats << endl;
-		cout << "	Clients Exited The Sistem	: " << exitQueue.getSize() / config.simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 1	: " << attendent1.getTotalIdleTime() / config.simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 1b: " << attendent1b.getTotalIdleTime() / config.simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 2	: " << attendent2.getTotalIdleTime() / config.simulationRepeats << endl;
-		cout << "	Total Idle Time For Attendent 2b: " << attendent2b.getTotalIdleTime() / config.simulationRepeats << endl;
-		if (config.addAttendent)
-			cout << "	Total Idle Time For Attendent 2c: " << attendent2c.getTotalIdleTime() / config.simulationRepeats << endl;
-		cout << "	Total Secondary Service Done	: " << exitQueue2.getSize() / config.simulationRepeats << endl;
-		cout << "	Secondary Service Per Attendent	: " << (exitQueue2.getSize() / 5) / config.simulationRepeats << endl;
+		outStream << endl << "------------------- Median Output <of " << config.simulationRepeats << " simulation(s)> -------------------" << endl << endl;
+		outStream << "	Incoming Clients / Simulation	: " << inGen.entityCounter / config.simulationRepeats << endl;
+
+		for (int i = 0; i < 10; i++)
+		{
+			if (config.addAttendant || i < 9)
+				outStream << "	Idle Time For Attendant " << i + 1 << "	: " << attendant[i].getTotalIdleTime() / config.simulationRepeats << " minutes" << endl;
+		}
+
+		//if (config.addAttendant)
+		//	outStream << "	Total Idle Time For Attendant 10	: " << attendant[9].getTotalIdleTime() / config.simulationRepeats << " minutes" << endl;
+
+		outStream << "	Secondary Service Done		: " << eList2.size() / config.simulationRepeats << endl;
+		outStream << "	Secondary Service / Attendants	: " << (eList2.size() / ((config.useDoubleAssignmentOutgoing) ? (((config.addAttendant)?10:9)) : 5)) / config.simulationRepeats << endl;
 	}
 
-	cout << endl;
-	system("pause");
+	outStream << endl << "------------------- ++++++ Output <of " << config.simulationRepeats << " simulation(s)> -------------------" << endl << endl;
+
+	outStream << "	----- Incoming Clients Statistics -----" << endl;
+	//Maior tempo de espera na fila
+	outStream << "	Incoming Call Max Time In Queue	: " << IncomingEntity::getMaxTimeInQueue() << " minutes" << endl;
+	if (config.simulationRepeats > 1)
+		outStream << "	 *Average Max Time In Queue	: " << (double)IncomingEntity::getMaxTimeInQueueSum() / (double)config.simulationRepeats << " minutes" << endl;
+
+	//Tempo Médio de um cliente na Fila
+	double cQueueWaitingTime = 0;
+	unsigned int clientsWaitedInQueue = 0;
+	double cServiceTime = 0;
+	double cSystemTime = 0;
+	for (size_t i = 0; i < eList.size(); i++)
+	{
+		unsigned long long tQ = ((IncomingEntity*)eList[i])->getTotalTimeInQueue();
+		unsigned long long tSys = ((IncomingEntity*)eList[i])->getTotalTimeInSystem();
+		unsigned long long tSer = ((IncomingEntity*)eList[i])->getTotalTimeInService();
+
+		//if (i < 10)
+		//	outStream << i << " - [DEBUG] - " << tSys << " = " << tQ << " + " << tSer << endl;
+		cSystemTime += tSys;
+		cServiceTime += tSer;
+		cQueueWaitingTime += tQ;
+
+		if (tQ > 0)
+		{
+			clientsWaitedInQueue++;
+		}
+	}
+
+	cQueueWaitingTime /= eList.size();
+	cServiceTime /= eList.size();
+	cSystemTime /= eList.size();
+
+	double clientInQueue = 100*((double)clientsWaitedInQueue / (double)eList.size());
+	outStream << "	Probability of Client in Queue	: " << setprecision(3) << clientInQueue << "%" << endl;
+	outStream << "	Average Queue Waiting Time	: " << setprecision(4) << cQueueWaitingTime << " minutes" << endl;
+	outStream << "	Average Service Time	: " << setprecision(4) << cServiceTime << " minutes" << endl;
+	outStream << "	Average Time in System	: " << setprecision(4) << cSystemTime << " minutes" << endl;
+
+	//Probabilidade de tamanho de fila
+	unsigned long totalSimulationTime = incomingCalls.getTotalSimulationTime();
+	std::map<unsigned long, unsigned long long> queueTimePerSize = incomingCalls.getTimePerSize();
+	double medianClientsInQueue = 0;
+	outStream << "	Probability of Queue Size	 " << endl;
+	for (std::map<unsigned long, unsigned long long>::iterator it = queueTimePerSize.begin(); it != queueTimePerSize.end(); ++it)
+	{
+		medianClientsInQueue += ((double)(it->first*it->second) / (double)totalSimulationTime);
+		double p = ((double)it->second / (double)totalSimulationTime) * 100;
+		outStream << "			Queue Size = " << it->first << "	: <" << ((p >= 10) ? "" : "0") << setprecision((p >= 10) ? 6 : ((p < 1) ? 4 : 5)) << p << "%>" << endl;
+
+	}
+
+	outStream << "	Average Expected Queue Size	: " << medianClientsInQueue << endl;
+
+	outStream << "	----- Outgoing Clients Statistics -----" << endl;
+
+	double cOutServiceTime = 0;
+	double cOutSystemTime = 0;
+	double answeredCalls = 0, busyCalls = 0, missedCalls = 0;
+	for (size_t i = 0; i < eList2.size(); i++)
+	{
+		unsigned long long tSys = ((OutgoingEntity*)eList2[i])->getTotalTimeInSystem();
+		unsigned long long tSer = ((OutgoingEntity*)eList2[i])->getTotalTimeInService();
+
+		//if (i < 20)
+		//	outStream << i << " - [DEBUG] - " << tSys << " = " << tSer << endl;
+
+		if (tSys <= outCallBusy + 0.5)
+		{
+			busyCalls++;
+		}
+		else if (tSys <= outCallMissed + 0.5)
+		{
+			missedCalls++;
+		}
+		else
+		{
+			answeredCalls++;
+		}
+
+		cOutSystemTime += tSys;
+		cOutServiceTime += tSer;
+	}
+
+	cOutServiceTime /= eList2.size();
+	cOutSystemTime /= eList2.size();
+	busyCalls /= eList2.size();
+	busyCalls *= 100;
+	missedCalls /= eList2.size();
+	missedCalls *= 100;
+	answeredCalls /= eList2.size();
+	answeredCalls *= 100;
+
+	outStream << "	Average Service Time	: " << setprecision(4) << cOutServiceTime << " minutes" << endl;
+	outStream << "	Average Time in System	: " << setprecision(4) << cOutSystemTime << " minutes" << endl;
+
+	outStream << "	Probability per Call Type	" << endl;
+	outStream << "			Busy Calls		: <" << ((busyCalls >= 10) ? "" : "0") << setprecision((busyCalls >= 10) ? 6 : ((busyCalls < 1) ? 4 : 5)) << busyCalls << "%>" << endl;
+	outStream << "			Missed Calls		: <" << ((missedCalls >= 10) ? "" : "0") << setprecision((missedCalls >= 10) ? 6 : ((missedCalls < 1) ? 4 : 5)) << missedCalls << "%>" << endl;
+	outStream << "			Answered Calls		: <" << ((answeredCalls >= 10) ? "" : "0") << setprecision((answeredCalls >= 10) ? 6 : ((answeredCalls < 1) ? 4 : 5)) << answeredCalls << "%>" << endl;
+
+
+	outStream << "	----- Other Statistics -----" << endl;
+
+	outStream << "	Attendant Busy/Free Time	 " << endl;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned long long tIdle = attendant[i].getTotalIdleTime();
+		unsigned long long tTotal = attendant[i].getTotalSimulationTime();
+		double b = 100*(((double)tTotal - (double)tIdle) / (double)tTotal), f = 100*((double)tIdle / (double)tTotal);
+		if (config.addAttendant || i < 9)
+		{
+			outStream << "			Attendant " << i + 1 << "	: <Busy: " << setprecision(3) << b << "%>" << "	<Free:" << setprecision(3) << f << "%>" << endl;
+
+			//outStream << "					  Attendant " << i + 1 << endl;
+			//outStream << "						" << "  <Busy: " << setprecision(3) << b << "%>" << endl;
+			//outStream << "						" << "  <Free:" << setprecision(3) << f << "%>" << endl;
+		}
+	}
+
+	outStream << "	Attendant Service Type " << endl;
+	for (int i = 0; i < 10; i++)
+	{
+		unsigned long long tIn = attendant[i].getEntityIncomingCounter();
+		unsigned long long tOut = attendant[i].getEntityOutgoingCounter();
+		unsigned long long tTotal = tIn+tOut;
+		double in = 100 * ((double)tIn / (double)tTotal), out = 100 * ((double)tOut / (double)tTotal);
+		if (config.addAttendant || i < 9)
+		{
+			outStream << "			Attendant " << i + 1 << "	: <Incoming: " << setprecision(3) << in << "%>" << "	<Outgoing:" << setprecision(3) << out << "%>" << endl;
+		}
+	}
+
+	outStream << endl;
+
+	cout << outStream.str();
+
+	if (config.saveToFile)
+	{
+		ofstream outFile;
+
+		outFile.open(config.fileName);
+
+		if (outFile.is_open())
+		{
+			outFile << "Command: ";
+			for (size_t i = 0; i < argc; i++)
+			{
+				outFile << argv[i] << " ";
+			}
+			outFile << endl;
+			outFile << outStream.str();
+			outFile.close();
+		}
+	}
+
+	if (config.pause)
+		system("pause");
 
 	//RandomController rc;
 

@@ -22,6 +22,8 @@ Generator::~Generator()
 void Generator::restart()
 {
 	nextEntityArrival = randControl->getRandom();
+	outputQueue->restart();
+	IncomingEntity::restart();
 }
 
 long long Generator::getNextTime(unsigned long long currentTime)
@@ -54,7 +56,9 @@ void Generator::update(unsigned long long currentTime)
 
 void Generator::end(unsigned long long currentTime)
 {
+	outputQueue->end(currentTime);
 	simulation++;
+	IncomingEntity::end();
 }
 
 

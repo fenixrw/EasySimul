@@ -18,7 +18,7 @@ public:
 	void setOutputQueue(Queue *out);
 	void setInputQueue(Queue *in);
 	void setSecondaryService(RandomController *r, Queue *out, unsigned long tLimit);
-
+	void activeFreeIncomingServiceRule();
 
 	void setTurn(long long startT, long long endT);
 
@@ -28,7 +28,14 @@ public:
 	unsigned long long getTotalIdleTime();
 	unsigned long getID();
 
+	unsigned long long getTotalSimulationTime();
+
+	static unsigned int minFreeServices;
+
 protected:
+
+	static unsigned int freeServices;
+	bool freeIncomingServiceRule;
 
 	unsigned long id;
 	void getNextEntity(unsigned long long currentTime);
@@ -43,14 +50,16 @@ protected:
 	unsigned long entityIncomingCounter;
 	unsigned long entityOutgoingCounter;
 	unsigned long long totalIdleTime;
+	unsigned long long totalSimulationTime;
 
 	Queue* entryQueue;
 	Queue* outputQueue;
 	Queue * primaryOutputQueue;
 	Queue * secondaryOutputQueue;
 	RandomController *secondaryRandControl;
-
+	
 private:
 	static unsigned long idController;
+	bool freeIncomingServiceRuleStarted;
 };
 

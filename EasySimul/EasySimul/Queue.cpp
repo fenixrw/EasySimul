@@ -9,11 +9,53 @@ Queue::Queue(QUEUE_TYPE t)
 	idController++;
 	maxSize = 0;
 	lastOperationTime = 0;
+	totalSimulationTime = 0;
 }
-
 
 Queue::~Queue()
 {
+}
+
+void Queue::end(unsigned long long currentTime)
+{
+	totalSimulationTime += currentTime;
+
+	unsigned long size = entityQueue.size();
+
+	if (timePerSize.find(size) != timePerSize.end())
+	{
+		timePerSize[size] += currentTime - lastOperationTime;
+	}
+	else
+	{
+		timePerSize[size] = currentTime - lastOperationTime;
+	}
+
+	//TODO: if !ExitQueue --> Erase queue & save info if clients were lost
+}
+
+void Queue::restart()
+{
+	lastOperationTime = 0;
+}
+
+unsigned long Queue::getTotalSimulationTime()
+{
+	return totalSimulationTime;
+}
+
+
+std::vector<Entity*> Queue::emptyToVector()
+{
+	std::vector<Entity*> v;
+
+	while (!entityQueue.empty())
+	{
+		v.push_back(entityQueue.front());
+		entityQueue.pop();
+	}
+
+	return v;
 }
 
 std::map<unsigned long, unsigned long long> Queue::getTimePerSize()
