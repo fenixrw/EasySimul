@@ -1,0 +1,76 @@
+Command: EasySimul.exe -f Cenario5r100.txt -i -o --rule -r 100 
+
+------------------- Total Output <of 100 simulation(s)> -------------------
+
+	Incoming Clients		: 3895
+	Idle Time For Attendant 1	: 8628 minutes
+	Idle Time For Attendant 2	: 6259 minutes
+	Idle Time For Attendant 3	: 7072 minutes
+	Idle Time For Attendant 4	: 7371 minutes
+	Idle Time For Attendant 5	: 6296 minutes
+	Idle Time For Attendant 6	: 5287 minutes
+	Idle Time For Attendant 7	: 5187 minutes
+	Idle Time For Attendant 8	: 4739 minutes
+	Idle Time For Attendant 9	: 4483 minutes
+	Secondary Service Done		: 22833
+	Secondary Service / Attendants	: 2537
+
+------------------- Median Output <of 100 simulation(s)> -------------------
+
+	Incoming Clients / Simulation	: 38
+	Idle Time For Attendant 1	: 86 minutes
+	Idle Time For Attendant 2	: 62 minutes
+	Idle Time For Attendant 3	: 70 minutes
+	Idle Time For Attendant 4	: 73 minutes
+	Idle Time For Attendant 5	: 62 minutes
+	Idle Time For Attendant 6	: 52 minutes
+	Idle Time For Attendant 7	: 51 minutes
+	Idle Time For Attendant 8	: 47 minutes
+	Idle Time For Attendant 9	: 44 minutes
+	Secondary Service Done		: 228
+	Secondary Service / Attendants	: 25
+
+------------------- ++++++ Output <of 100 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 19 minutes
+	 *Average Max Time In Queue	: 5.45 minutes
+	Probability of Client in Queue	: 13.5%
+	Average Queue Waiting Time	: 0.4429 minutes
+	Average Service Time	: 16.49 minutes
+	Average Time in System	: 16.94 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <97.6315%>
+			Queue Size = 1	: <01.9727%>
+			Queue Size = 2	: <00.3502%>
+			Queue Size = 3	: <00.04561%>
+	Average Expected Queue Size	: 0.0281
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 9.372 minutes
+	Average Time in System	: 9.372 minutes
+	Probability per Call Type	
+			Busy Calls		: <04.038%>
+			Missed Calls		: <56.7687%>
+			Answered Calls		: <39.1933%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 76%>	<Free:24%>
+			Attendant 2	: <Busy: 82.6%>	<Free:17.4%>
+			Attendant 3	: <Busy: 81.1%>	<Free:18.9%>
+			Attendant 4	: <Busy: 80.3%>	<Free:19.7%>
+			Attendant 5	: <Busy: 82.5%>	<Free:17.5%>
+			Attendant 6	: <Busy: 85.3%>	<Free:14.7%>
+			Attendant 7	: <Busy: 86.1%>	<Free:13.9%>
+			Attendant 8	: <Busy: 87.3%>	<Free:12.7%>
+			Attendant 9	: <Busy: 88%>	<Free:12%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 25%>	<Outgoing:75%>
+			Attendant 2	: <Incoming: 18.1%>	<Outgoing:81.9%>
+			Attendant 3	: <Incoming: 14.4%>	<Outgoing:85.6%>
+			Attendant 4	: <Incoming: 13.5%>	<Outgoing:86.5%>
+			Attendant 5	: <Incoming: 16.4%>	<Outgoing:83.6%>
+			Attendant 6	: <Incoming: 14.7%>	<Outgoing:85.3%>
+			Attendant 7	: <Incoming: 11.4%>	<Outgoing:88.6%>
+			Attendant 8	: <Incoming: 11.3%>	<Outgoing:88.7%>
+			Attendant 9	: <Incoming: 9.26%>	<Outgoing:90.7%>
+

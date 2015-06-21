@@ -1,0 +1,64 @@
+Command: EasySimul.exe -f Cenario2.txt -a 
+
+------------------- Total Output <of 1 simulation(s)> -------------------
+
+	Incoming Clients		: 26
+	Idle Time For Attendant 1	: 219 minutes
+	Idle Time For Attendant 2	: 308 minutes
+	Idle Time For Attendant 3	: 285 minutes
+	Idle Time For Attendant 4	: 305 minutes
+	Idle Time For Attendant 5	: 0 minutes
+	Idle Time For Attendant 6	: 0 minutes
+	Idle Time For Attendant 7	: 5 minutes
+	Idle Time For Attendant 8	: 5 minutes
+	Idle Time For Attendant 9	: 0 minutes
+	Idle Time For Attendant 10	: 314 minutes
+	Secondary Service Done		: 199
+	Secondary Service / Attendants	: 39
+	End Time			: 607 minutes
+
+------------------- ++++++ Output <of 1 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 28 minutes
+	Probability of Client in Queue	: 19.2%
+	Average Queue Waiting Time	: 3.808 minutes
+	Average Service Time	: 14.73 minutes
+	Average Time in System	: 18.54 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <91.4333%>
+			Queue Size = 1	: <03.2949%>
+			Queue Size = 2	: <02.8007%>
+			Queue Size = 3	: <02.4712%>
+	Average Expected Queue Size	: 0.1631
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 9.116 minutes
+	Average Time in System	: 9.116 minutes
+	Probability per Call Type	
+			Busy Calls		: <03.5176%>
+			Missed Calls		: <59.2965%>
+			Answered Calls		: <37.1859%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 39.2%>	<Free:60.8%>
+			Attendant 2	: <Busy: 14.4%>	<Free:85.6%>
+			Attendant 3	: <Busy: 22.3%>	<Free:77.7%>
+			Attendant 4	: <Busy: 16.9%>	<Free:83.1%>
+			Attendant 5	: <Busy: 100%>	<Free:0%>
+			Attendant 6	: <Busy: 100%>	<Free:0%>
+			Attendant 7	: <Busy: 98.6%>	<Free:1.36%>
+			Attendant 8	: <Busy: 98.6%>	<Free:1.36%>
+			Attendant 9	: <Busy: 100%>	<Free:0%>
+			Attendant 10	: <Busy: 12.8%>	<Free:87.2%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 2	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 3	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 4	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 5	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 6	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 7	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 8	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 9	: <Incoming: 0%>	<Outgoing:100%>
+			Attendant 10	: <Incoming: 100%>	<Outgoing:0%>
+
