@@ -1,0 +1,59 @@
+Command: EasySimul.exe -f output4rule.txt -i -o --rule 
+
+------------------- Total Output <of 1 simulation(s)> -------------------
+
+	Incoming Clients		: 29
+	Idle Time For Attendant 1	: 198 minutes
+	Idle Time For Attendant 2	: 42 minutes
+	Idle Time For Attendant 3	: 87 minutes
+	Idle Time For Attendant 4	: 112 minutes
+	Idle Time For Attendant 5	: 34 minutes
+	Idle Time For Attendant 6	: 22 minutes
+	Idle Time For Attendant 7	: 16 minutes
+	Idle Time For Attendant 8	: 2 minutes
+	Idle Time For Attendant 9	: 91 minutes
+	Secondary Service Done		: 240
+	Secondary Service / Attendants	: 26
+	End Time			: 613 minutes
+
+------------------- ++++++ Output <of 1 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 1 minutes
+	Probability of Client in Queue	: 3.45%
+	Average Queue Waiting Time	: 0.03448 minutes
+	Average Service Time	: 15.48 minutes
+	Average Time in System	: 15.52 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <99.8369%>
+			Queue Size = 1	: <00.1631%>
+	Average Expected Queue Size	: 0.001631
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 9.554 minutes
+	Average Time in System	: 9.554 minutes
+	Probability per Call Type	
+			Busy Calls		: <03.75%>
+			Missed Calls		: <55.8333%>
+			Answered Calls		: <40.4167%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 45%>	<Free:55%>
+			Attendant 2	: <Busy: 88.3%>	<Free:11.7%>
+			Attendant 3	: <Busy: 76.7%>	<Free:23.3%>
+			Attendant 4	: <Busy: 70%>	<Free:30%>
+			Attendant 5	: <Busy: 90.6%>	<Free:9.44%>
+			Attendant 6	: <Busy: 93.9%>	<Free:6.11%>
+			Attendant 7	: <Busy: 95.7%>	<Free:4.29%>
+			Attendant 8	: <Busy: 99.5%>	<Free:0.536%>
+			Attendant 9	: <Busy: 75.6%>	<Free:24.4%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 46.7%>	<Outgoing:53.3%>
+			Attendant 2	: <Incoming: 9.09%>	<Outgoing:90.9%>
+			Attendant 3	: <Incoming: 9.38%>	<Outgoing:90.6%>
+			Attendant 4	: <Incoming: 20%>	<Outgoing:80%>
+			Attendant 5	: <Incoming: 9.38%>	<Outgoing:90.6%>
+			Attendant 6	: <Incoming: 15.2%>	<Outgoing:84.8%>
+			Attendant 7	: <Incoming: 8.57%>	<Outgoing:91.4%>
+			Attendant 8	: <Incoming: 2.63%>	<Outgoing:97.4%>
+			Attendant 9	: <Incoming: 0%>	<Outgoing:100%>
+

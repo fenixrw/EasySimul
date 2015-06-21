@@ -1,0 +1,82 @@
+Command: EasySimul.exe -f output7r1000rule.txt -a -i -o -r 1000 --rule 
+
+------------------- Total Output <of 1000 simulation(s)> -------------------
+
+	Incoming Clients		: 38572
+	Idle Time For Attendant 1	: 77748 minutes
+	Idle Time For Attendant 2	: 60266 minutes
+	Idle Time For Attendant 3	: 66838 minutes
+	Idle Time For Attendant 4	: 60717 minutes
+	Idle Time For Attendant 5	: 55062 minutes
+	Idle Time For Attendant 6	: 47625 minutes
+	Idle Time For Attendant 7	: 55541 minutes
+	Idle Time For Attendant 8	: 53006 minutes
+	Idle Time For Attendant 9	: 47759 minutes
+	Idle Time For Attendant 10	: 44248 minutes
+	Secondary Service Done		: 267356
+	Secondary Service / Attendants	: 26735
+
+------------------- Median Output <of 1000 simulation(s)> -------------------
+
+	Incoming Clients / Simulation	: 38
+	Idle Time For Attendant 1	: 77 minutes
+	Idle Time For Attendant 2	: 60 minutes
+	Idle Time For Attendant 3	: 66 minutes
+	Idle Time For Attendant 4	: 60 minutes
+	Idle Time For Attendant 5	: 55 minutes
+	Idle Time For Attendant 6	: 47 minutes
+	Idle Time For Attendant 7	: 55 minutes
+	Idle Time For Attendant 8	: 53 minutes
+	Idle Time For Attendant 9	: 47 minutes
+	Idle Time For Attendant 10	: 44 minutes
+	Secondary Service Done		: 267
+	Secondary Service / Attendants	: 26
+
+------------------- ++++++ Output <of 1000 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 22 minutes
+	 *Average Max Time In Queue	: 4.081 minutes
+	Probability of Client in Queue	: 10.9%
+	Average Queue Waiting Time	: 0.3033 minutes
+	Average Service Time	: 16.69 minutes
+	Average Time in System	: 17 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <98.377%>
+			Queue Size = 1	: <01.3787%>
+			Queue Size = 2	: <00.211%>
+			Queue Size = 3	: <00.02898%>
+			Queue Size = 4	: <00.004234%>
+			Queue Size = 5	: <00%>
+	Average Expected Queue Size	: 0.01905
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 9.31 minutes
+	Average Time in System	: 9.31 minutes
+	Probability per Call Type	
+			Busy Calls		: <03.9427%>
+			Missed Calls		: <57.5424%>
+			Answered Calls		: <38.5149%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 78.4%>	<Free:21.6%>
+			Attendant 2	: <Busy: 83.3%>	<Free:16.7%>
+			Attendant 3	: <Busy: 82.1%>	<Free:17.9%>
+			Attendant 4	: <Busy: 83.8%>	<Free:16.2%>
+			Attendant 5	: <Busy: 84.7%>	<Free:15.3%>
+			Attendant 6	: <Busy: 86.8%>	<Free:13.2%>
+			Attendant 7	: <Busy: 85.2%>	<Free:14.8%>
+			Attendant 8	: <Busy: 85.8%>	<Free:14.2%>
+			Attendant 9	: <Busy: 87.2%>	<Free:12.8%>
+			Attendant 10	: <Busy: 87.7%>	<Free:12.3%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 19.1%>	<Outgoing:80.9%>
+			Attendant 2	: <Incoming: 14.8%>	<Outgoing:85.2%>
+			Attendant 3	: <Incoming: 14.4%>	<Outgoing:85.6%>
+			Attendant 4	: <Incoming: 12.9%>	<Outgoing:87.1%>
+			Attendant 5	: <Incoming: 12.8%>	<Outgoing:87.2%>
+			Attendant 6	: <Incoming: 11.4%>	<Outgoing:88.6%>
+			Attendant 7	: <Incoming: 11.5%>	<Outgoing:88.5%>
+			Attendant 8	: <Incoming: 10.5%>	<Outgoing:89.5%>
+			Attendant 9	: <Incoming: 9.82%>	<Outgoing:90.2%>
+			Attendant 10	: <Incoming: 10.2%>	<Outgoing:89.8%>
+

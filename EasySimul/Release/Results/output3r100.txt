@@ -1,0 +1,78 @@
+Command: EasySimul.exe -f output3r100.txt -i -r 100 
+
+------------------- Total Output <of 100 simulation(s)> -------------------
+
+	Incoming Clients		: 3983
+	Idle Time For Attendant 1	: 20719 minutes
+	Idle Time For Attendant 2	: 26512 minutes
+	Idle Time For Attendant 3	: 25939 minutes
+	Idle Time For Attendant 4	: 30700 minutes
+	Idle Time For Attendant 5	: 0 minutes
+	Idle Time For Attendant 6	: 0 minutes
+	Idle Time For Attendant 7	: 736 minutes
+	Idle Time For Attendant 8	: 781 minutes
+	Idle Time For Attendant 9	: 769 minutes
+	Secondary Service Done		: 17103
+	Secondary Service / Attendants	: 3420
+
+------------------- Median Output <of 100 simulation(s)> -------------------
+
+	Incoming Clients / Simulation	: 39
+	Idle Time For Attendant 1	: 207 minutes
+	Idle Time For Attendant 2	: 265 minutes
+	Idle Time For Attendant 3	: 259 minutes
+	Idle Time For Attendant 4	: 307 minutes
+	Idle Time For Attendant 5	: 0 minutes
+	Idle Time For Attendant 6	: 0 minutes
+	Idle Time For Attendant 7	: 7 minutes
+	Idle Time For Attendant 8	: 7 minutes
+	Idle Time For Attendant 9	: 7 minutes
+	Secondary Service Done		: 171
+	Secondary Service / Attendants	: 34
+
+------------------- ++++++ Output <of 100 simulation(s)> -------------------
+
+	----- Incoming Clients Statistics -----
+	Incoming Call Max Time In Queue	: 21 minutes
+	 *Average Max Time In Queue	: 6.56 minutes
+	Probability of Client in Queue	: 16.9%
+	Average Queue Waiting Time	: 0.599 minutes
+	Average Service Time	: 16.87 minutes
+	Average Time in System	: 17.47 minutes
+	Probability of Queue Size	 
+			Queue Size = 0	: <96.7902%>
+			Queue Size = 1	: <02.6393%>
+			Queue Size = 2	: <00.4711%>
+			Queue Size = 3	: <00.08966%>
+			Queue Size = 4	: <00.009781%>
+			Queue Size = 5	: <00%>
+	Average Expected Queue Size	: 0.0389
+	----- Outgoing Clients Statistics -----
+	Average Service Time	: 9.32 minutes
+	Average Time in System	: 9.32 minutes
+	Probability per Call Type	
+			Busy Calls		: <03.8882%>
+			Missed Calls		: <57.3584%>
+			Answered Calls		: <38.7534%>
+	----- Other Statistics -----
+	Attendant Busy/Free Time	 
+			Attendant 1	: <Busy: 42.4%>	<Free:57.6%>
+			Attendant 2	: <Busy: 26.4%>	<Free:73.6%>
+			Attendant 3	: <Busy: 30.5%>	<Free:69.5%>
+			Attendant 4	: <Busy: 17.8%>	<Free:82.2%>
+			Attendant 5	: <Busy: 100%>	<Free:0%>
+			Attendant 6	: <Busy: 100%>	<Free:0%>
+			Attendant 7	: <Busy: 98%>	<Free:1.97%>
+			Attendant 8	: <Busy: 97.9%>	<Free:2.09%>
+			Attendant 9	: <Busy: 97.9%>	<Free:2.06%>
+	Attendant Service Type 
+			Attendant 1	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 2	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 3	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 4	: <Incoming: 100%>	<Outgoing:0%>
+			Attendant 5	: <Incoming: 8.49%>	<Outgoing:91.5%>
+			Attendant 6	: <Incoming: 8.4%>	<Outgoing:91.6%>
+			Attendant 7	: <Incoming: 8.11%>	<Outgoing:91.9%>
+			Attendant 8	: <Incoming: 6.69%>	<Outgoing:93.3%>
+			Attendant 9	: <Incoming: 5.93%>	<Outgoing:94.1%>
+

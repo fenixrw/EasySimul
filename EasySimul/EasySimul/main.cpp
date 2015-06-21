@@ -114,13 +114,15 @@ int main(int argc, char** argv)
 
 	RandomController::init(config.seed);
 
-	double outCallAnswered = 13, outCallBusy = 2.5, outCallMissed = 4;
+	double outCallAnswered = 15, outCallBusy = 2, outCallMissed = 6;
+	//double outCallAnswered = 13, outCallBusy = 2.5, outCallMissed = 4;
+
 		
 	LogNormal lnDist(2.0179,1.2223); //Arrival Distribution
 	Normal nDist(15.714, 11.604);
 	unsigned int prob[3] = { 3, 39, 58 };
 	double m3[3] = { outCallBusy, outCallAnswered, outCallMissed };//{ 1, 8, 2 };//
-	double s3[3] = { 0.005, 1, 0.005 };
+	double s3[3] = { 0.005, 2, 0.005 };
 	UniformNormal3 un3Dist(prob, m3, s3);
 
 	Queue incomingCalls(EntryQueue), exitQueue(ExitQueue), exitQueue2(ExitQueue), emptyQueue;
@@ -128,8 +130,7 @@ int main(int argc, char** argv)
 	Generator inGen(&lnDist);
 	inGen.setOutputQueue(&incomingCalls);
 	inGen.setTimeLimit(config.simulationTime);
-
-
+	
 
 	//----------------------------- INCOMING CALLS -----------------------------
 	Service attendant[10] = { 
