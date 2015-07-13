@@ -1,6 +1,6 @@
 #pragma once
 #include "SimulationNode.h"
-#include "IncomingEntity.h"
+#include "Entity.h"
 
 class Generator : public SimulationNode
 {
@@ -20,7 +20,6 @@ public:
 
 protected:
 
-	unsigned long simulation;
 	unsigned long timeLimit;
 	long long nextEntityArrival;
 	Queue *outputQueue;

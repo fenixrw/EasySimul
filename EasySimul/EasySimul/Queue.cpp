@@ -9,7 +9,6 @@ Queue::Queue(QUEUE_TYPE t)
 	idController++;
 	maxSize = 0;
 	lastOperationTime = 0;
-	totalSimulationTime = 0;
 }
 
 Queue::~Queue()
@@ -18,8 +17,6 @@ Queue::~Queue()
 
 void Queue::end(unsigned long long currentTime)
 {
-	totalSimulationTime += currentTime;
-
 	unsigned long size = entityQueue.size();
 
 	if (timePerSize.find(size) != timePerSize.end())
@@ -31,19 +28,16 @@ void Queue::end(unsigned long long currentTime)
 		timePerSize[size] = currentTime - lastOperationTime;
 	}
 
+	lastOperationTime = currentTime;
+
 	//TODO: if !ExitQueue --> Erase queue & save info if clients were lost
 }
 
 void Queue::restart()
 {
+	maxSize = 0;
 	lastOperationTime = 0;
 }
-
-unsigned long Queue::getTotalSimulationTime()
-{
-	return totalSimulationTime;
-}
-
 
 std::vector<Entity*> Queue::emptyToVector()
 {
@@ -91,11 +85,13 @@ Entity* Queue::getNext(unsigned long long currentTime)
 	switch (type)
 	{
 	case NormalQueue:
+		e->totalTimeInQueue += (currentTime - e->enterQueueTime);
 		e->exitQueue(currentTime, id);
 		break;
 	case ExitQueue:
 		break;
 	case EntryQueue:
+		e->totalTimeInQueue += (currentTime - e->enterQueueTime);
 		e->exitQueue(currentTime, id);
 		break;
 	default:
@@ -131,12 +127,16 @@ bool Queue::add(Entity *e, unsigned long long currentTime)
 	switch (type)
 	{
 	case NormalQueue:
+		e->enterQueueTime = currentTime;
 		e->enterQueue(currentTime,id);
 		break;
 	case ExitQueue:
+		e->exitSystemTime = currentTime;
 		e->exitSystem(currentTime);
 		break;
 	case EntryQueue:
+		e->enterQueueTime = currentTime;
+		e->enterSystemTime = currentTime;
 		e->enterSystem(currentTime);
 		e->enterQueue(currentTime, id);
 		break;

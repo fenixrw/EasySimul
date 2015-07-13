@@ -112,34 +112,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityS.cpp" />
     <ClCompile Include="Generator.cpp" />
-    <ClCompile Include="IncomingEntity.cpp" />
     <ClCompile Include="LogNormal.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Normal.cpp" />
-    <ClCompile Include="OutgoingEntity.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="RandomController.cpp" />
     <ClCompile Include="Service.cpp" />
     <ClCompile Include="SimulationCore.cpp" />
     <ClCompile Include="SimulationNode.cpp" />
-    <ClCompile Include="UniformNormal3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityS.h" />
     <ClInclude Include="Generator.h" />
-    <ClInclude Include="IncomingEntity.h" />
     <ClInclude Include="LogNormal.h" />
     <ClInclude Include="Normal.h" />
-    <ClInclude Include="OutgoingEntity.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="RandomController.h" />
     <ClInclude Include="Service.h" />
     <ClInclude Include="SimulationCore.h" />
     <ClInclude Include="SimulationNode.h" />
-    <ClInclude Include="UniformNormal3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

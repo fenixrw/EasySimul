@@ -23,7 +23,6 @@ public:
 	unsigned long getMaxSize();
 	unsigned long getID();
 	std::vector<Entity*> emptyToVector();
-	unsigned long getTotalSimulationTime();
 	void end(unsigned long long currentTime);
 	void restart();
 	
@@ -33,7 +32,6 @@ protected:
 	QUEUE_TYPE type;
 	unsigned long maxSize;
 	unsigned long long lastOperationTime;
-	unsigned long long totalSimulationTime;
 	std::map<unsigned long, unsigned long long> timePerSize;  //[size] --> time
 
 private:

@@ -6,8 +6,13 @@ Entity::Entity()
 {
 	id = idController;
 	idController++;
+
 	enterSystemTime = 0;
 	exitSystemTime = 0;
+
+	totalTimeInService = 0;
+	totalTimeInQueue = 0;
+	enterQueueTime = 0;
 }
 
 Entity::~Entity()
@@ -25,12 +30,12 @@ unsigned long Entity::getID()
 	return id;
 }
 
-void Entity::enterSystem(unsigned long long currentTime)
+unsigned long long Entity::getTotalTimeInService()
 {
-	enterSystemTime = currentTime;
+	return totalTimeInService;
 }
 
-void Entity::exitSystem(unsigned long long currentTime)
+unsigned long long Entity::getTotalTimeInQueue()
 {
-	exitSystemTime = currentTime;
+	return totalTimeInQueue;
 }

@@ -1,6 +1,5 @@
 #pragma once
-#include "OutgoingEntity.h"
-#include "IncomingEntity.h"
+#include "Entity.h"
 #include "SimulationNode.h"
 
 class Service : public SimulationNode
@@ -17,26 +16,17 @@ public:
 
 	void setOutputQueue(Queue *out);
 	void setInputQueue(Queue *in);
-	void setSecondaryService(RandomController *r, Queue *out, unsigned long tLimit);
-	void activeFreeIncomingServiceRule();
 
 	void setTurn(long long startT, long long endT);
 
-
-	unsigned long getEntityIncomingCounter();
-	unsigned long getEntityOutgoingCounter();
-	unsigned long long getTotalIdleTime();
 	unsigned long getID();
 
-	unsigned long long getTotalSimulationTime();
-
-	static unsigned int minFreeServices;
-
+	unsigned long long getIdleTime();
+	unsigned long long getSimulationTime();
+	unsigned long getEntityCounter();
+	
 protected:
-
-	static unsigned int freeServices;
-	bool freeIncomingServiceRule;
-
+	
 	unsigned long id;
 	void getNextEntity(unsigned long long currentTime);
 	unsigned long simulation; /*Simulation Day/Number */
@@ -45,21 +35,15 @@ protected:
 	long long lastServiceTime; /*starts at 0*/
 	long long startTurn;
 	long long endTurn;
-	EntityS* entityInService;	
+	Entity* entityInService;	
 
-	unsigned long entityIncomingCounter;
-	unsigned long entityOutgoingCounter;
-	unsigned long long totalIdleTime;
-	unsigned long long totalSimulationTime;
+	unsigned long entityCounter;
+	unsigned long long idleTime;
+	unsigned long long simulationTime;
 
 	Queue* entryQueue;
 	Queue* outputQueue;
-	Queue * primaryOutputQueue;
-	Queue * secondaryOutputQueue;
-	RandomController *secondaryRandControl;
 	
 private:
 	static unsigned long idController;
-	bool freeIncomingServiceRuleStarted;
 };
-

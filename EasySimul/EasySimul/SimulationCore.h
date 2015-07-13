@@ -11,18 +11,15 @@ public:
 
 	void add(SimulationNode* n);
 	void run();
+	void restart();
 
 
 	unsigned long long getCurrentTime();
-	void setRepeat(unsigned long numberOfSimulations);
 
 protected:
 
-	unsigned long timesToRepeat;
-	unsigned long simulationNumber;
 	unsigned long long currentTime;
 
-	SimulationNode* getNextNode();
 	long long getNextTime();
 
 	std::vector<SimulationNode*> nodes;
