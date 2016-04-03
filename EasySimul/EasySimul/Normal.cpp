@@ -18,3 +18,8 @@ unsigned long Normal::getRandom()
 #endif
 	return mod(round((*normalDist)(*mtGenerator)));
 }
+
+double Normal::getRandom_d()
+{
+	return ((*normalDist)(*mtGenerator));
+}

@@ -26,7 +26,8 @@ public:
 	unsigned long getEntityCounter();
 	
 protected:
-	
+
+	RandomController *randControl;
 	unsigned long id;
 	void getNextEntity(unsigned long long currentTime);
 	unsigned long simulation; /*Simulation Day/Number */

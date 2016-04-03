@@ -2,8 +2,9 @@
 #include <iostream>
 unsigned long Service::idController = 0;
 
-Service::Service(RandomController *r) : SimulationNode(r)
+Service::Service(RandomController *r)
 {
+	randControl = r;
 	finishServiceTime = -1;//idle
 	lastServiceTime = 0;// used to calculate idle time
 	entityInService = NULL;

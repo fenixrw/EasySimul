@@ -1,8 +1,9 @@
 #include "Generator.h"
 
 
-Generator::Generator(RandomController *r) : SimulationNode(r)
+Generator::Generator(RandomController *r)
 {
+	randControl = r;
 	nextEntityArrival = randControl->getRandom();
 
 #ifdef OUTPUT_DEBUG_RAND

@@ -1,9 +1,8 @@
 #include "SimulationNode.h"
 
 
-SimulationNode::SimulationNode(RandomController *r)
+SimulationNode::SimulationNode()
 {
-	randControl = r;
 }
 
 

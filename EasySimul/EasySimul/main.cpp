@@ -1,3 +1,4 @@
+/*
 #include "SimulationCore.h"
 #include "LogNormal.h"
 #include "Normal.h"
@@ -259,6 +260,42 @@ int main(int argc, char** argv)
 
 	if (config.pause)
 		system("pause");
+
+	return 0;
+}
+*/
+
+
+#include "SimulationCore.h"
+#include "LogNormal.h"
+#include "Normal.h"
+#include "ContextEntity.h"
+
+int main()
+{
+	//http://davidmlane.com/hyperstat/z_table.html
+	//http://programmers.stackexchange.com/questions/230193/2d-movement-of-an-object-based-on-speed-and-new-vector
+
+	RandomController::init();
+
+	ContextEntity::finishTime = 60 * 60 * 24;
+	ContextEntity::updateScheduleTime = 30;
+
+	SimulationCore core;
+
+	Normal movement(0, 0.5);
+		
+	ContextEntity *entitySet[15];
+
+	for (int i = 0; i < 15; i++)
+	{
+		entitySet[i] = new ContextEntity(&movement);
+		core.add(entitySet[i]);
+	}
+
+	core.run();
+
+	system("pause");
 
 	return 0;
 }

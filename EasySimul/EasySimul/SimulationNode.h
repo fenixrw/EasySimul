@@ -5,16 +5,12 @@
 class SimulationNode
 {
 public:
-	SimulationNode(RandomController *r);
+	SimulationNode();
 	~SimulationNode();
 
 	virtual long long getNextTime(unsigned long long currentTime){ return -1; };
 	virtual void update(unsigned long long currentTime){};
 	virtual void end(unsigned long long currentTime){};
 	virtual void restart(){};
-	
-protected:
-
-	RandomController *randControl;
 };
 

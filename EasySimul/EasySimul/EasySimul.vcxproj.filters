@@ -30,9 +30,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimulationNode.cpp">
-      <Filter>Source Files\Engine\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Engine\Base</Filter>
     </ClCompile>
@@ -56,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="Service.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ContextEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationNode.cpp">
+      <Filter>Source Files\Engine\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Service.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ContextEntity.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

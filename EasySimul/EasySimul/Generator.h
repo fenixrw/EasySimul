@@ -20,6 +20,8 @@ public:
 
 protected:
 
+	RandomController *randControl;
+
 	unsigned long timeLimit;
 	long long nextEntityArrival;
 	Queue *outputQueue;
